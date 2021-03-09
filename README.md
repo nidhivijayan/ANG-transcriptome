@@ -23,7 +23,7 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 ## Sample Information
 
 |  | Nyholm Lab (unpub) | Pankey et al. 2014 | Moriano-Gutierrez et al. 2019 |
-| ****** | ****** | ****** | ****** | 
+| ------ | ------ | ------ | ------ | 
 | Organs | ANG (n=6) | E. scolopes ANG (n=3), U. edulis ANG (n=3) and LO (n=3) | LO (n=3) |
 | Time of day | 11am | Morning | Night |
 | Extraction method | Trizol extraction | RiboPure kit (Ambion) | RNEasy columns (Qiagen) |
