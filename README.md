@@ -12,7 +12,25 @@ The bobtail squid provides a unique system to study two stable symbiotic organs 
 Transcriptomics may help us understand what mechanisms the ANG uses to actively maintain and respond to bacteria. Transcriptomes can be assembled de-novo or genome-guided. There is a The is 5.1 Mb genome sequence of *E. scolopes*. The assembly has an N50 of 3,724kb with 35% gaps (Belcaid et al. 2019). This project will:
 1. Compare the qualities of de novo and genome-guided ANG (n=8) and LO transcriptomes (n=5).
 2. Analyze the pattern of differential expression between the ANG and LO from the de novo and genome-guided transcriptomes. If no significant difference is found, Nidhi will use the genome assembled transcriptomes for further analysis of the physiology of the ANG (to minimize issues with future authorship), while analysis of the de-novo assembled transcripts will continue for the project. If there are major differences, these will be explored. 
+	* This will closely follow the tutorials for RNA-ses data analysis [Model Marine RNA-Seq and Non-ModelPlant RNA-Seq]
+		* HISAT2 for the genome-guided transcriptome
+		* Trinity for the de-novo assembled transcriptome
+	* Comparisons between the transcriptomes will be made using mesures such as RNA-Quast and BUSCO scores to detrmine the completeness and size of the transcriptome. 
+	* Differentially expressd genes will likely be called using DESeq2.
+	* Differentially expressed genes will be annotated and enriched ontology terms will be identified.
 3. identify and annotate orthologous genes between ANG from *E. scolopes* and *Uroteuthis edulis*. Many, but not all, squid possess an ANG, therefore, it is possible some immune genes are conserved between species with this organ. 
+
+## Sample Information
+
+|  | Nyholm Lab (unpub) | Pankey et al. 2014 | Moriano-Gutierrez et al. 2019 |
+| ****** | ****** | ****** | ****** | 
+| Organs | ANG (n=6) | E. scolopes ANG (n=3), U. edulis ANG (n=3) and LO (n=3) | LO (n=3) |
+| Time of day| 11am | Morning | Night |
+| Extraction method | Trizol extraction | RiboPure kit (Ambion) | RNEasy columns (Qiagen) |
+| Library prep | TruSeq Stranded mRNA Library Prep Kit +polyA selection | TruSeq Stranded mRNA Library Prep Kit | TruSeq stranded mRNA + polyA selection |
+| Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
+
+
 
 Work Cited:
 
