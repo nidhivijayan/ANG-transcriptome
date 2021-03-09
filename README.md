@@ -25,7 +25,7 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 |  | Nyholm Lab (unpub) | Pankey et al. 2014 | Moriano-Gutierrez et al. 2019 |
 | ****** | ****** | ****** | ****** | 
 | Organs | ANG (n=6) | E. scolopes ANG (n=3), U. edulis ANG (n=3) and LO (n=3) | LO (n=3) |
-| Time of day| 11am | Morning | Night |
+| Time of day | 11am | Morning | Night |
 | Extraction method | Trizol extraction | RiboPure kit (Ambion) | RNEasy columns (Qiagen) |
 | Library prep | TruSeq Stranded mRNA Library Prep Kit +polyA selection | TruSeq Stranded mRNA Library Prep Kit | TruSeq stranded mRNA + polyA selection |
 | Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
