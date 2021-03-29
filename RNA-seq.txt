@@ -1,0 +1,48 @@
+#To concatenate raw reads
+cat E8-ANG-2_S5_L001_R1_001.fastq.gz E8-ANG-2_S5_L002_R1_001.fastq.gz E8-ANG-2_S5_L003_R1_001.fastq.gz E8-ANG-2_S5_L004_R1_001.fastq.gz > E8_total_R1_raw.fastq.gz
+
+#Seven ANGs from Nyholm lab, 3 from Pankey, 3 Light organs from Pankey and 3 from Morriano-Gutierrez
+
+
+#Running triimomatic on those files:
+module load Trimmomatic/0.36
+java -jar $Trimmomatic PE \
+ ../Concatenated_reads/E8_total_R1_raw.fastq.gz \
+ ../Concatenated_reads/E8_total_R2_raw.fastq.gz \
+  E8ANG_forward_paired.fq.gz E8ANG_forward_unpaired.fq.gz \
+ E8ANG_reverse_paired.fq.gz E8ANG_reverse_unpaired.fq.gz \
+  ILLUMINACLIP:TruSeq3-PE:2:30:10:2:keepBothReads LEADING:3 TRAILING:3 MINLEN:45
+  
+  # Created genome index with hisat
+  module load hisat2/2.1.0
+hisat2-build /home/CAM/nvijayan/transcriptome/eup_scolopes_assembly_v1.0.fa /home/CAM/nvijayan/transcriptome/hisat_genome/Es_genome
+
+module load hisat2/2.1.0
+module load samtools/1.9
+
+genome=/home/CAM/nvijayan/transcriptome/hisat_genome/Es_genome
+
+#aligned paired end trimmed files to indexed genome Version 1 using hisat
+hisat2 -p 8 -x ${genome} -1 ../ANG_Nyholm_trimmed_reads/E8ANG_forward_paired_trimmed.fq.gz -2 ../ANG_Nyholm_trimmed_reads/E8ANG_reverse_paired_trimmed.fq.gz -S ANG_E8.sam --rg PL:ILLUMINA --rna-strandness FR
+
+#Checked stats on the aligned RNAseq data
+samtools flagstat /home/CAM/nvijayan/transcriptome/hisat_V1_trimmed/ANG_J1.sam > stat_J1.txt
+
+Hisat aligned Sam files	Mapped (%)	Properly paired (%)	singletons (%)	read1=read2?	Total
+J1	77.27	73.1	2.81	Yes	
+J8	72.11	67.66	2.82	yes	
+E16	30.85	25.2	2.94	yes	55894617
+E8	47.78	40.85	4.8	yes 	860070094
+C8	28.59	18.78	6.2	yes	43744876
+K7	70.97	65.96	3.39	yes	42898847
+K3	68.06	63.15	3.23	yes	50146803
+Es1	69.69	59	6.77	yes	46429461
+Es2	67.53	57.94	6.19	yes	48746023
+Es3	68.05	57.64	7.44	yes	45491440
+LO_Es1	71.04	59.66	7.69	yes	49674566
+LO_Es2	68.55	57.18	8.03	yes	40302143
+LO_Es3	66.68	53.83	8.66	yes	59298719
+WT_LO1	77.68	68.71	6.24	yes	34823107
+WT_LO2	68.93	56.47	8.82	yes	44084300
+WT_LO3	63.06	48.48	10.10	yes	44511853
+
