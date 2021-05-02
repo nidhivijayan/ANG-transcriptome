@@ -30,10 +30,10 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 | Library prep | TruSeq Stranded mRNA Library Prep Kit +polyA selection | TruSeq Stranded mRNA Library Prep Kit | TruSeq stranded mRNA + polyA selection |
 | Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
 
-###We had the following objective:
+### We had the following objective:
 1. To compare the qualities of the genome guided and de novo transcriptome assemblies
 
-##Processing RNAseq data
+## Processing RNAseq data
 All the following commands were written as batch scripts and executed on the Xanadu cluster. 
 
 The samples sequenced by the Nyholm lab were done so in four lanes. So each forward(R1) and reverse(R2) reads were concatenated separately to one file using:
@@ -41,7 +41,7 @@ The samples sequenced by the Nyholm lab were done so in four lanes. So each forw
 cat E8-ANG-2_S5_L001_R1_001.fastq.gz E8-ANG-2_S5_L002_R1_001.fastq.gz E8-ANG-2_S5_L003_R1_001.fastq.gz E8-ANG-2_S5_L004_R1_001.fastq.gz > E8_total_R1_raw.fastq.gz
 ```
 
-###1. We ran trimmomatic on the fastq files:
+### 1. We ran trimmomatic on the fastq files:
 ```ruby
 module load trimmomatic/0.36
 java -jar $Trimmomatic PE \
@@ -52,7 +52,7 @@ java -jar $Trimmomatic PE \
   ILLUMINACLIP:TruSeq3-PE:2:30:10:2:keepBothReads LEADING:3 TRAILING:3 MINLEN:45
 ```
 
-###3.To check the quality of the reads before and after trimming, fastqc was run on the fastq files
+### 2. To check the quality of the reads before and after trimming, fastqc was run on the fastq files
 ```ruby
 module load fastqc/0.11.5
 mkdir /fastqc/before_trim/
@@ -76,7 +76,7 @@ Summary of the quality metrics all the reads by MultiQC
 ![multiQC](https://user-images.githubusercontent.com/80131639/116816765-4d168200-ab31-11eb-9108-e4d3aa4bf93f.png)
 
 
-###Genome guided Transcriptome assembly
+### 3. Genome guided Transcriptome assembly
 We used the genome sequenced by [Belcaid et al. 2019](https://www.pnas.org/content/116/8/3030). We first indexed the genome using hisat
 ```ruby
 module load hisat2/2.1.0
@@ -133,7 +133,7 @@ We combined the output of the trinity assemblies:
 cat Trinity_prefix_* > trinity_combined_GG.fasta
 ```
 
-###De novo transcriptome assembly
+### 4. De novo transcriptome assembly
 After some trials we later learned that "forward" and "Reverse" read names are now incompatible with trinity. So we modified the files using sed to remove those words
 ```ruby
 sed -e 's/\_forward\>//g' /Es_paired/E8ANG_forward_paired.fq > /Es_paired/E8ANG_R1.fq
@@ -151,7 +151,7 @@ Trinity --seqType fq --left ${input}/E8ANG_${f_p}.fq --right  ${input}/E8ANG_${r
 ```
 As it was done for the genome guided assemblies, we prefixed and concatenated the files from de novo guided assemblies.
 
-##Compare Qualities of assemblies
+## 5. Compare Qualities of assemblies
 
 Work Cited:
 
