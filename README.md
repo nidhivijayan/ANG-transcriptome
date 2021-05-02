@@ -153,6 +153,49 @@ As it was done for the genome guided assemblies, we prefixed and concatenated th
 
 ## 5. Compare Qualities of assemblies
 
+### Bowtie2 
+We examined the read composition of the assemblies using Bowtie2 to assess if the reads were properly paired. 
+
+We first build the index of the combined fasta file"
+```ruby
+bowtie2-build trinity_combined_denovo.fasta trinity_combined_denovo.fasta
+```
+
+Then aligned the reads back to the indexed fasta file
+```ruby
+input1=/ANG_Nyholm_trimmed_reads/
+input2=/Es_paired
+fileList="Es1LO Es2LO Es3LO WT_LO1 WT_LO2 WT_LO2 J1ANGeuk J8ANGeuk K3ANGeuk K7ANGeuk E16_ANG2 Es1ANG Es2ANG Es3ANG"
+
+module load bowtie2
+module load samtools
+
+for file in ${fileList}
+	do
+		PREFIX=`echo ${file} | cut -d "." -f 1`
+		bowtie2 -p 10 -q --no-unal -k 20 -x trinity_combined_GG.fasta -1 ${input2}/${file}_forward_paired.fq -2 ${input2}/${file}_reverse_paired.fq \
+			2>align_stats_${PREFIX}.txt |samtools view -@10 -Sb -o bowtie2_${PREFIX}.bam
+done | tee -a log_bowtie_2.txt
+```
+We found all the assemblies were 100% paired with different overall alignment rate:
+
+| ID | Overall alignment genome guided (%) | Overall alignment de novo (%) |
+| ------ | ------ | ------ |
+|K7ANG|89.85|NA|
+|K3ANG|91.78|NA|
+|E8|93.29|NA|
+|J1|90.2|NA|
+|Es1ANG|94.03|97.05|
+|Es2ANG|93.54|96.3|
+|Es3ANG|94.23|97.27|
+|Es1LO|93|95.07|
+|Es2LO|92.78|94.12|
+|Es3LO|92.56|95.66|
+|WT_LO1|91.5|96.09|
+|WT_LO2|92.54|96.57|
+
+
+
 Work Cited:
 
 * Alegado, R. A., Brown, L. W., Cao, S., Dermenjian, R. K., Zuzow, R., Fairclough, S. R., et al. (2012). A bacterial sulfonolipid triggers multicellular development in the closest living relatives of animals. Elife 1. doi:10.7554/eLife.00013.
