@@ -30,6 +30,9 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 | Library prep | TruSeq Stranded mRNA Library Prep Kit +polyA selection | TruSeq Stranded mRNA Library Prep Kit | TruSeq stranded mRNA + polyA selection |
 | Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
 
+###We had the following objective:
+1. To compare the qualities of the genome guided and de novo transcriptome assemblies
+
 ##Processing RNAseq data
 All the following commands were written as batch scripts and executed on the Xanadu cluster. 
 
@@ -102,9 +105,53 @@ This is the summary of the alignment statistics of all the files
 | SAM FILES ID | Mapped (%) | Total |
 | ------ | ------ | ------ |
 |J1| 77.27|58428307|
-|J8|72.11|52105737
-![image](https://user-images.githubusercontent.com/80131639/116817064-b4810180-ab32-11eb-81d1-af126e2dafbc.png)
+|J8|72.11|52105737|
+|E16|69.95|55894617|
+|E8|73.2|49674356|
+|Es1|69.69|46429461|
+|Es2|67.53|48746023|
+|LO_Es1|71.04|49674566|
+|LO_Es2|68.55|40302143|
+|LO_Es3|66.68|59298719|
+|WT_LO1|77.68|34823107|
+|WT_LO2|68.93|44084300|
+|WT_LO3|63.06|44511853|
 
+Genome guided trinity was executed for each aligned bam file independently. I used an intron size of 6000 based on the intron size calculated from other cephalopods like the Octopus. 
+```ruby
+Trinity --genome_guided_bam /bam/ANG_E8_euk.bam --genome_guided_max_intron 6000 --max_memory 50G --SS_lib_type FR --output ../trinity/trinity_GG_E8_euk
+```
+We edited the output names of the trinity assemblies
+```ruby
+out=/trinity
+prefix=Trinity_prefix
+#sed "s/>/>E8_/g" trinity/trinity_GG_E8/Trinity-GG.fasta > /trinity/Trinity_prefix_E8.fasta  
+```
+
+We combined the output of the trinity assemblies:
+```ruby
+cat Trinity_prefix_* > trinity_combined_GG.fasta
+```
+
+###De novo transcriptome assembly
+After some trials we later learned that "forward" and "Reverse" read names are now incompatible with trinity. So we modified the files using sed to remove those words
+```ruby
+sed -e 's/\_forward\>//g' /Es_paired/E8ANG_forward_paired.fq > /Es_paired/E8ANG_R1.fq
+```
+
+We assembled the trimmed reads using de novo genome assembly with trinity
+
+```ruby
+module load trinity
+module load samtools
+input=/Es_paired/
+r_p=R2
+f_p=R1
+Trinity --seqType fq --left ${input}/E8ANG_${f_p}.fq --right  ${input}/E8ANG_${r_p}.fq --min_contig_length 300 --max_memory 100G --output trinity_Es1ANG --full_cleanup --CPU 20
+```
+As it was done for the genome guided assemblies, we prefixed and concatenated the files from de novo guided assemblies.
+
+##Compare Qualities of assemblies
 
 Work Cited:
 
