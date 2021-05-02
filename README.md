@@ -31,13 +31,14 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 | Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
 
 ##Processing RNAseq data
+All the following commands were written as batch scripts and executed on the Xanadu cluster. 
 
 The samples sequenced by the Nyholm lab were done so in four lanes. So each forward(R1) and reverse(R2) reads were concatenated separately to one file using:
 ```ruby
 cat E8-ANG-2_S5_L001_R1_001.fastq.gz E8-ANG-2_S5_L002_R1_001.fastq.gz E8-ANG-2_S5_L003_R1_001.fastq.gz E8-ANG-2_S5_L004_R1_001.fastq.gz > E8_total_R1_raw.fastq.gz
 ```
 
-We ran trimmomatic on the fastq files:
+###1. We ran trimmomatic on the fastq files:
 ```ruby
 module load trimmomatic/0.36
 java -jar $Trimmomatic PE \
@@ -48,7 +49,7 @@ java -jar $Trimmomatic PE \
   ILLUMINACLIP:TruSeq3-PE:2:30:10:2:keepBothReads LEADING:3 TRAILING:3 MINLEN:45
 ```
 
-To check the quality of the reads before and after trimming, fastqc was run on the fastq files
+###3.To check the quality of the reads before and after trimming, fastqc was run on the fastq files
 ```ruby
 module load fastqc/0.11.5
 mkdir /fastqc/before_trim/
@@ -61,13 +62,48 @@ fastqc --outdir /fastqc/after_trim/ E8ANG_reverse_paired_trimmed.fq.gz
 ```
 
 To compare all the quality reads we ran multiqc. I moved all the zipped outputs from fastqc to a folder called zipped
-```
+```ruby
 multiqc --outdir multiqc_before_after fastqc/zipped/
 ```
 Overall the qualities between before and after trimming were not significantly different, and we did not lose many sequences to trimming.
 
 ![multiqc_plot_SeqsNumber](https://user-images.githubusercontent.com/80131639/116816286-5868ae00-ab2f-11eb-8c49-dee223ede6c4.png)
 
+Summary of the quality metrics all the reads by MultiQC
+![multiQC](https://user-images.githubusercontent.com/80131639/116816765-4d168200-ab31-11eb-9108-e4d3aa4bf93f.png)
+
+
+###Genome guided Transcriptome assembly
+We used the genome sequenced by [Belcaid et al. 2019] (https://www.pnas.org/content/116/8/3030). We first indexed the genome using hisat
+```ruby
+module load hisat2/2.1.0
+hisat2-build eup_scolopes_assembly_v1.0.fa /hisat_genome/Es_genome
+```
+We then aligned the trimmed reads to the indexed genome
+```ruby
+module load hisat2/2.1.0
+module load samtools/1.9
+genome=/hisat_genome/Es_genome
+hisat2 -p 8 -x ${genome} -1 ../ANG_Nyholm_trimmed_reads/E8ANG_forward_paired_trimmed.fq.gz -2 ../ANG_Nyholm_trimmed_reads/E8ANG_reverse_paired_trimmed.fq.gz -S ANG_E8.sam --rg PL:ILLUMINA --rna-strandness FR
+```
+We converted sam to bam files
+```ruby
+samtools view -S -h -u -@ 8 E8_euk_ANG.sam | samtools sort -@ 8  > ../bam/ANG_E8_euk.bam
+```
+Since the bam files are larged, we indexed the bam files like that of the genome. This makes it easier to search through when aligning
+```ruby
+samtools index ANG_E8.bam ANG_E8.bai
+```
+An alignment summary of the sam files were determined with samtools
+```ruby
+samtools flagstat /E8_euk_ANG.sam > stat_E8_ANG.txt
+```
+This is the summary of the alignment statistics of all the files
+| SAM FILES ID | Mapped (%) | Total |
+| ------ | ------ | ------ |
+|J1| 77.27|58428307|
+|J8|72.11|52105737
+![image](https://user-images.githubusercontent.com/80131639/116817064-b4810180-ab32-11eb-81d1-af126e2dafbc.png)
 
 
 Work Cited:
