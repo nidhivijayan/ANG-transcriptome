@@ -77,7 +77,7 @@ Summary of the quality metrics all the reads by MultiQC
 
 
 ###Genome guided Transcriptome assembly
-We used the genome sequenced by [Belcaid et al. 2019] (https://www.pnas.org/content/116/8/3030). We first indexed the genome using hisat
+We used the genome sequenced by [Belcaid et al. 2019](https://www.pnas.org/content/116/8/3030). We first indexed the genome using hisat
 ```ruby
 module load hisat2/2.1.0
 hisat2-build eup_scolopes_assembly_v1.0.fa /hisat_genome/Es_genome
