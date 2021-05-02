@@ -153,7 +153,7 @@ As it was done for the genome guided assemblies, we prefixed and concatenated th
 
 ## 5. Compare Qualities of assemblies
 
-### Bowtie2 
+### 5.1 Bowtie2 
 We examined the read composition of the assemblies using Bowtie2 to assess if the reads were properly paired. 
 
 We first build the index of the combined fasta file"
