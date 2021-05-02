@@ -24,11 +24,49 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 
 |  | Nyholm Lab (unpub) | Pankey et al. 2014 | Moriano-Gutierrez et al. 2019 |
 | ------ | ------ | ------ | ------ | 
-| Organs | ANG (n=6) | E. scolopes ANG (n=3), U. edulis ANG (n=3) and LO (n=3) | LO (n=3) |
+| Organs | ANG (n=3) | E. scolopes ANG (n=3), and LO (n=3) | LO (n=3) |
 | Time of day | 11am | Morning | Night |
 | Extraction method | Trizol extraction | RiboPure kit (Ambion) | RNEasy columns (Qiagen) |
 | Library prep | TruSeq Stranded mRNA Library Prep Kit +polyA selection | TruSeq Stranded mRNA Library Prep Kit | TruSeq stranded mRNA + polyA selection |
 | Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
+
+##Processing RNAseq data
+
+The samples sequenced by the Nyholm lab were done so in four lanes. So each forward(R1) and reverse(R2) reads were concatenated separately to one file using:
+```ruby
+cat E8-ANG-2_S5_L001_R1_001.fastq.gz E8-ANG-2_S5_L002_R1_001.fastq.gz E8-ANG-2_S5_L003_R1_001.fastq.gz E8-ANG-2_S5_L004_R1_001.fastq.gz > E8_total_R1_raw.fastq.gz
+```
+
+We ran trimmomatic on the fastq files:
+```ruby
+module load trimmomatic/0.36
+java -jar $Trimmomatic PE \
+ ../Concatenated_reads/E8_total_R1_raw.fastq.gz \
+ ../Concatenated_reads/E8_total_R2_raw.fastq.gz \
+  E8ANG_forward_paired.fq.gz E8ANG_forward_unpaired.fq.gz \
+ E8ANG_reverse_paired.fq.gz E8ANG_reverse_unpaired.fq.gz \
+  ILLUMINACLIP:TruSeq3-PE:2:30:10:2:keepBothReads LEADING:3 TRAILING:3 MINLEN:45
+```
+
+To check the quality of the reads before and after trimming, fastqc was run on the fastq files
+```ruby
+module load fastqc/0.11.5
+mkdir /fastqc/before_trim/
+mkdir /fastqc/after_trim/
+fastqc --outdir  /fastqc/before_trim/ E8_euk_R1_raw.fastq.gz
+fastqc --outdir /fastqc/before_trim/ E8_euk_R2_raw.fastq.gz
+
+fastqc --outdir  /fastqc/after_trim/ E8ANG_forward_paired_trimmed.fq.gz
+fastqc --outdir /fastqc/after_trim/ E8ANG_reverse_paired_trimmed.fq.gz
+```
+
+To compare all the quality reads we ran multiqc. I moved all the zipped outputs from fastqc to a folder called zipped
+```
+multiqc --outdir multiqc_before_after fastqc/zipped/
+```
+Overall the qualities between before and after trimming were not significantly different, and we did not lose many sequences to trimming.
+
+![multiqc_plot_SeqsNumber](https://user-images.githubusercontent.com/80131639/116816286-5868ae00-ab2f-11eb-8c49-dee223ede6c4.png)
 
 
 
@@ -43,3 +81,5 @@ Work Cited:
 * Suria, A. M., Tan, K. C., Kerwin, A. H., Gitzel, L., Abini-Agbomson, L., Bertenshaw, J. M., et al. (2020). Hawaiian Bobtail Squid Symbionts Inhibit Marine Bacteria via Production of Specialized Metabolites, Including New Bromoalterochromides BAC-D/D′. mSphere 5, e00166-20. doi:10.1128/mSphere.00166-20.
 
 ![image](https://user-images.githubusercontent.com/80131639/110220931-ef4e1c80-7e96-11eb-97a4-ea1685980e19.png)
+
+
