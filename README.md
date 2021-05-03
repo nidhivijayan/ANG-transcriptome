@@ -151,6 +151,31 @@ Trinity --seqType fq --left ${input}/E8ANG_${f_p}.fq --right  ${input}/E8ANG_${r
 ```
 As it was done for the genome guided assemblies, we prefixed and concatenated the files from de novo guided assemblies.
 
+### Identifying the coding regions
+
+We identified the coding regions using Transdecoder
+```ruby
+module load TransDecoder/5.3.0
+TransDecoder.LongOrfs -t /trinity_combined_denovo.fasta
+```
+-t is the inuput of the concatenated fasta files. We did this for genome guided (trinity_combined_GG.fasta) and de novo (shown above). This creates the folder "trinity_combine.fasta.transdecoder_dir"
+
+Since there may be many open reading frames for the transcripts, we used pfam database to identify homology to known proteins
+```ruby
+hmmscan --cpu 30 --domtblout pfam.domtblout /isg/shared/databases/Trinotate/Pfam-A.hmm /trinity_combined_denovo.fasta.transdecoder_dir/longest_orfs.pep > pfam.log
+```
+It took about 2 days to complete hmmscan
+
+We then use transdecoder again with the output from hmmscan, to identify which ORFs are real
+```ruby
+TransDecoder.Predict --cpu 16 -t trinity_combined_denovo.fasta --retain_pfam_hits pfam.domtblout
+```
+
+We then created fasta file of the representative transcripts by clustering them with vsearch
+```ruby
+vsearch --threads 8 --log LOGFile --cluster_fast trinity_combined_denovo.fasta.transdecoder.cds --id 0.90 --centroids centroids.fasta --uc clusters.uc
+```
+
 ## 5. Compare Qualities of assemblies
 
 ### 5.1 Bowtie2 
