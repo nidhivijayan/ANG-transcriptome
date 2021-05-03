@@ -219,7 +219,29 @@ We found all the assemblies were 100% paired with different overall alignment ra
 |WT_LO1|91.5|96.09|
 |WT_LO2|92.54|96.57|
 
+### 5.2 RNAquast 
 
+We compared the basic metrics data between genome guided and de novo assemblies of the ANG (n=5)
+
+| Metric | genome guided | de novo |
+| ------ | ------ | ------ |
+|Transcripts|30822|38099|
+|Transcript > 500 bp|15203|17081|
+|Transcripts > 1000 bp|6654|7341|
+|Transcript N50|918|2637|
+
+![rnaquast_compare](https://user-images.githubusercontent.com/80131639/116941185-36f5e800-ac3d-11eb-886a-401921396b7c.png)
+
+### 5.3 BUSCO
+
+We compared the BUSCO scores using the Metazoa database of Busco v.10 between genome guided and de novo assemblies of ANG (n=5)
+| Metric | Genome guided| de novo |
+| ------ | ------ | ------ |
+|Complete (%)| 82 |  |
+|Single copy (%)| 80.2 |  |
+|Duplicated (%)| 1.7 |  |
+|Fragmented (%)| 11.5 |  |
+|Missing(%)| 6.6 | |
 
 Work Cited:
 
