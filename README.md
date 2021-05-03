@@ -223,6 +223,11 @@ We found all the assemblies were 100% paired with different overall alignment ra
 
 We compared the basic metrics data between genome guided and de novo assemblies of the ANG (n=5)
 
+```ruby
+module load rnaQUAST/1.5.2
+rnaQUAST.py --transcripts centroids.fasta --gene_mark --threads 8 --output_dir RNAquast_denovo
+```
+
 | Metric | genome guided | de novo |
 | ------ | ------ | ------ |
 |Transcripts|30822|38099|
@@ -234,7 +239,15 @@ We compared the basic metrics data between genome guided and de novo assemblies 
 
 ### 5.3 BUSCO
 
-We compared the BUSCO scores using the Metazoa database of Busco v.10 between genome guided and de novo assemblies of ANG (n=5)
+We compared the BUSCO scores using the Metazoa database of Busco v.4.0.2 between genome guided and de novo assemblies of ANG (n=5)
+```ruby
+module load busco/4.0.2
+export AUGUSTUS_CONFIG_PATH=../../augustus/config
+
+busco -i centroids.fasta -o busco_gg_metazoa \
+	-m tran -l /isg/shared/databases/BUSCO/odb10/lineages/metazoa_odb10 -f
+```
+
 | Metric | Genome guided| de novo |
 | ------ | ------ | ------ |
 |Complete (%)| 82 |  |
