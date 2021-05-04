@@ -250,11 +250,11 @@ busco -i centroids.fasta -o busco_gg_metazoa \
 
 | Metric | Genome guided| de novo |
 | ------ | ------ | ------ |
-|Complete (%)| 82 |  |
-|Single copy (%)| 80.2 |  |
-|Duplicated (%)| 1.7 |  |
-|Fragmented (%)| 11.5 |  |
-|Missing(%)| 6.6 | |
+|Complete (%)| 82 | 92.3 |
+|Single copy (%)| 80.2 | 90.8 |
+|Duplicated (%)| 1.7 | 1.5 |
+|Fragmented (%)| 11.5 | 3.5 |
+|Missing(%)| 6.6 | 4.2 |
 
 Work Cited:
 
