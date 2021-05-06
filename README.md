@@ -72,7 +72,7 @@ Overall the qualities between before and after trimming were not significantly d
 
 ![multiqc_plot_SeqsNumber](https://user-images.githubusercontent.com/80131639/116816286-5868ae00-ab2f-11eb-8c49-dee223ede6c4.png)
 
-Summary of the quality metrics all the reads by MultiQC
+Summary of the quality metrics all the reads by MultiQC: Most of the metrics show good quality reads. We do see abnormal results for per base sequence content, sequence duplication and overrepresented sequences. However, these are normal for transcriptomic sequences.
 ![multiQC](https://user-images.githubusercontent.com/80131639/116816765-4d168200-ab31-11eb-9108-e4d3aa4bf93f.png)
 
 
@@ -206,10 +206,10 @@ We found all the assemblies were 100% paired with different overall alignment ra
 
 | ID | Overall alignment genome guided (%) | Overall alignment de novo (%) |
 | ------ | ------ | ------ |
-|K7ANG|89.85|NA|
-|K3ANG|91.78|NA|
-|E8|93.29|NA|
-|J1|90.2|NA|
+|K7ANG|89.85|92|
+|K3ANG|91.78|93.6|
+|E8|93.29|95.2|
+|J1|90.2|92.4|
 |Es1ANG|94.03|97.05|
 |Es2ANG|93.54|96.3|
 |Es3ANG|94.23|97.27|
@@ -237,6 +237,8 @@ rnaQUAST.py --transcripts centroids.fasta --gene_mark --threads 8 --output_dir R
 
 ![rnaquast_compare](https://user-images.githubusercontent.com/80131639/116941185-36f5e800-ac3d-11eb-886a-401921396b7c.png)
 
+There are more reads and better N50 score for the de novo assembly compared to the genome guided. This could be the result of possible bacterial contamination  However, interestingly we get more number of transcripts/isoforms of longer length in genome guided than de novo assembly. This appears to be a result of few (about 10s) longer length transcripts in genome guided. 
+
 ### 5.3 BUSCO
 
 We compared the BUSCO scores using the Metazoa database of Busco v.4.0.2 between genome guided and de novo assemblies of ANG (n=5)
@@ -255,6 +257,8 @@ busco -i centroids.fasta -o busco_gg_metazoa \
 |Duplicated (%)| 1.7 | 1.5 |
 |Fragmented (%)| 11.5 | 3.5 |
 |Missing(%)| 6.6 | 4.2 |
+
+De novo guided assembly gave a better BUSCO score compare to the genome guided. 
 
 Work Cited:
 
