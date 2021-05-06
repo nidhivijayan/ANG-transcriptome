@@ -18,7 +18,7 @@ Transcriptomics may help us understand what mechanisms the ANG uses to actively 
 	* Comparisons between the transcriptomes will be made using mesures such as RNA-Quast and BUSCO scores to detrmine the completeness and size of the transcriptome. 
 	* Differentially expressd genes will likely be called using DESeq2.
 	* Differentially expressed genes will be annotated and enriched ontology terms will be identified.
-3. identify and annotate orthologous genes between ANG from *E. scolopes* and *Uroteuthis edulis*. Many, but not all, squid possess an ANG, therefore, it is possible some immune genes are conserved between species with this organ. 
+
 
 ## Sample Information
 
