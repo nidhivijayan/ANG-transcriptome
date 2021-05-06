@@ -265,7 +265,7 @@ The primary goal of this project was to determine which mode of assembly is best
 
 In the future, we will be sequencing the ANG and central core (found inside the LO) of the same individual female. If by then an updated genome is assembled, Nidhi will use that genome for future assemblies. Else, she will use a combination of de novo and genome guided assemblies to further process and identify differentially expressed genes between the ANG and the central core. This will help identify any shared immune response to symbiotic bacteria and also identify genes unique to each organ. 
 
-Work Cited:
+## Work Cited:
 
 * Alegado, R. A., Brown, L. W., Cao, S., Dermenjian, R. K., Zuzow, R., Fairclough, S. R., et al. (2012). A bacterial sulfonolipid triggers multicellular development in the closest living relatives of animals. Elife 1. doi:10.7554/eLife.00013.
 * Gromek, S. M., Suria, A. M., Fullmer, M. S., Garcia, J. L., Gogarten, J. P., Nyholm, S. V, et al. (2016). Leisingera sp. JC1, a Bacterial Isolate from Hawaiian Bobtail Squid Eggs, Produces Indigoidine and Differentially Inhibits Vibrios   . Front. Microbiol.   7, 1342. Available at: https://www.frontiersin.org/article/10.3389/fmicb.2016.01342.
