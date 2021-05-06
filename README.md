@@ -260,7 +260,7 @@ busco -i centroids.fasta -o busco_gg_metazoa \
 
 De novo guided assembly gave a better BUSCO score compare to the genome guided. 
 
-##Discussion
+## Discussion
 The primary goal of this project was to determine which mode of assembly is best suited for transcriptomics of _Euprymna scolopes._ This organism was recently sequenced and the genome still has some gaps. Based on our results, de novo guided assembly appears to be better. However, we would like to include the genome guided assembly so we can trace interesting genes to the genome annotation map. The community that studies this model organism is small but robust. Many efforts are collaborative, and thus would like to incorporate the genome guided assembly so certain genes can be located back to the genome easily. 
 
 In the future, we will be sequencing the ANG and central core (found inside the LO) of the same individual female. If by then an updated genome is assembled, Nidhi will use that genome for future assemblies. Else, she will use a combination of de novo and genome guided assemblies to further process and identify differentially expressed genes between the ANG and the central core. This will help identify any shared immune response to symbiotic bacteria and also identify genes unique to each organ. 
