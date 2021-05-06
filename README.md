@@ -177,6 +177,7 @@ vsearch --threads 8 --log LOGFile --cluster_fast trinity_combined_denovo.fasta.t
 ```
 
 ## 5. Compare Qualities of assemblies
+For comaprison between assemblies, 5 ANGs, 2 from Nyholm and 3 from Pankey were assembled and compared. Similarly 5 LOs were assembled separately and compared. This was done due to time constraints. 
 
 ### 5.1 Bowtie2 
 We examined the read composition of the assemblies using Bowtie2 to assess if the reads were properly paired. 
