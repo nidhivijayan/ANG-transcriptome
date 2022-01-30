@@ -14,7 +14,7 @@ To identify the differences in de-novo and genome guidede transcriptome assembly
 | Library prep | TruSeq Stranded mRNA Library Prep Kit +polyA selection | TruSeq Stranded mRNA Library Prep Kit | TruSeq stranded mRNA + polyA selection |
 | Platform | NextSeq 500 (2x150) | Hiseq 2000 (2x150) | Hiseq 2000 (2x125) |
 
-### We had the following objective:
+### I had the following objective:
 1. To compare the qualities of the genome guided and de novo transcriptome assemblies
 
 ## Processing RNAseq data
@@ -25,7 +25,7 @@ The samples sequenced by the Nyholm lab were done so in four lanes. So each forw
 cat E8-ANG-2_S5_L001_R1_001.fastq.gz E8-ANG-2_S5_L002_R1_001.fastq.gz E8-ANG-2_S5_L003_R1_001.fastq.gz E8-ANG-2_S5_L004_R1_001.fastq.gz > E8_total_R1_raw.fastq.gz
 ```
 
-### 1. We ran trimmomatic on the fastq files:
+### 1. I ran trimmomatic on the fastq files:
 ```ruby
 module load trimmomatic/0.36
 java -jar $Trimmomatic PE \
@@ -48,7 +48,7 @@ fastqc --outdir  /fastqc/after_trim/ E8ANG_forward_paired_trimmed.fq.gz
 fastqc --outdir /fastqc/after_trim/ E8ANG_reverse_paired_trimmed.fq.gz
 ```
 
-To compare all the quality reads we ran multiqc. I moved all the zipped outputs from fastqc to a folder called zipped
+To compare all the quality reads I ran multiqc. I moved all the zipped outputs from fastqc to a folder called zipped
 ```ruby
 multiqc --outdir multiqc_before_after fastqc/zipped/
 ```
@@ -61,23 +61,23 @@ Summary of the quality metrics all the reads by MultiQC: Most of the metrics sho
 
 
 ### 3. Genome guided Transcriptome assembly
-We used the genome sequenced by [Belcaid et al. 2019](https://www.pnas.org/content/116/8/3030). We first indexed the genome using hisat
+I used the genome sequenced by [Belcaid et al. 2019](https://www.pnas.org/content/116/8/3030). We first indexed the genome using hisat
 ```ruby
 module load hisat2/2.1.0
 hisat2-build eup_scolopes_assembly_v1.0.fa /hisat_genome/Es_genome
 ```
-We then aligned the trimmed reads to the indexed genome
+I then aligned the trimmed reads to the indexed genome
 ```ruby
 module load hisat2/2.1.0
 module load samtools/1.9
 genome=/hisat_genome/Es_genome
 hisat2 -p 8 -x ${genome} -1 ../ANG_Nyholm_trimmed_reads/E8ANG_forward_paired_trimmed.fq.gz -2 ../ANG_Nyholm_trimmed_reads/E8ANG_reverse_paired_trimmed.fq.gz -S ANG_E8.sam --rg PL:ILLUMINA --rna-strandness FR
 ```
-We converted sam to bam files
+I converted sam to bam files
 ```ruby
 samtools view -S -h -u -@ 8 E8_euk_ANG.sam | samtools sort -@ 8  > ../bam/ANG_E8_euk.bam
 ```
-Since the bam files are larged, we indexed the bam files like that of the genome. This makes it easier to search through when aligning
+Since the bam files are larged, I indexed the bam files like that of the genome. This makes it easier to search through when aligning
 ```ruby
 samtools index ANG_E8.bam ANG_E8.bai
 ```
@@ -105,25 +105,25 @@ Genome guided trinity was executed for each aligned bam file independently. I us
 ```ruby
 Trinity --genome_guided_bam /bam/ANG_E8_euk.bam --genome_guided_max_intron 6000 --max_memory 50G --SS_lib_type FR --output ../trinity/trinity_GG_E8_euk
 ```
-We edited the output names of the trinity assemblies
+I edited the output names of the trinity assemblies
 ```ruby
 out=/trinity
 prefix=Trinity_prefix
 #sed "s/>/>E8_/g" trinity/trinity_GG_E8/Trinity-GG.fasta > /trinity/Trinity_prefix_E8.fasta  
 ```
 
-We combined the output of the trinity assemblies:
+I combined the output of the trinity assemblies:
 ```ruby
 cat Trinity_prefix_* > trinity_combined_GG.fasta
 ```
 
 ### 4. De novo transcriptome assembly
-After some trials we later learned that "forward" and "Reverse" read names are now incompatible with trinity. So we modified the files using sed to remove those words
+After some trials I later learned that "forward" and "Reverse" read names are now incompatible with trinity. So we modified the files using sed to remove those words
 ```ruby
 sed -e 's/\_forward\>//g' /Es_paired/E8ANG_forward_paired.fq > /Es_paired/E8ANG_R1.fq
 ```
 
-We assembled the trimmed reads using de novo genome assembly with trinity
+I assembled the trimmed reads using de novo genome assembly with trinity
 
 ```ruby
 module load trinity
@@ -133,29 +133,29 @@ r_p=R2
 f_p=R1
 Trinity --seqType fq --left ${input}/E8ANG_${f_p}.fq --right  ${input}/E8ANG_${r_p}.fq --min_contig_length 300 --max_memory 100G --output trinity_Es1ANG --full_cleanup --CPU 20
 ```
-As it was done for the genome guided assemblies, we prefixed and concatenated the files from de novo guided assemblies.
+As it was done for the genome guided assemblies, I prefixed and concatenated the files from de novo guided assemblies.
 
 ### Identifying the coding regions
 
-We identified the coding regions using Transdecoder
+I identified the coding regions using Transdecoder
 ```ruby
 module load TransDecoder/5.3.0
 TransDecoder.LongOrfs -t /trinity_combined_denovo.fasta
 ```
--t is the inuput of the concatenated fasta files. We did this for genome guided (trinity_combined_GG.fasta) and de novo (shown above). This creates the folder "trinity_combine.fasta.transdecoder_dir"
+-t is the inuput of the concatenated fasta files. I did this for genome guided (trinity_combined_GG.fasta) and de novo (shown above). This creates the folder "trinity_combine.fasta.transdecoder_dir"
 
-Since there may be many open reading frames for the transcripts, we used pfam database to identify homology to known proteins
+Since there may be many open reading frames for the transcripts, I used pfam database to identify homology to known proteins
 ```ruby
 hmmscan --cpu 30 --domtblout pfam.domtblout /isg/shared/databases/Trinotate/Pfam-A.hmm /trinity_combined_denovo.fasta.transdecoder_dir/longest_orfs.pep > pfam.log
 ```
 It took about 2 days to complete hmmscan
 
-We then use transdecoder again with the output from hmmscan, to identify which ORFs are real
+I then use transdecoder again with the output from hmmscan, to identify which ORFs are real
 ```ruby
 TransDecoder.Predict --cpu 16 -t trinity_combined_denovo.fasta --retain_pfam_hits pfam.domtblout
 ```
 
-We then created fasta file of the representative transcripts by clustering them with vsearch
+I then created fasta file of the representative transcripts by clustering them with vsearch
 ```ruby
 vsearch --threads 8 --log LOGFile --cluster_fast trinity_combined_denovo.fasta.transdecoder.cds --id 0.90 --centroids centroids.fasta --uc clusters.uc
 ```
@@ -164,9 +164,9 @@ vsearch --threads 8 --log LOGFile --cluster_fast trinity_combined_denovo.fasta.t
 For comaprison between assemblies, 5 ANGs, 2 from Nyholm and 3 from Pankey were assembled and compared. Similarly 5 LOs were assembled separately and compared. This was done due to time constraints. 
 
 ### 5.1 Bowtie2 
-We examined the read composition of the assemblies using Bowtie2 to assess if the reads were properly paired. 
+I examined the read composition of the assemblies using Bowtie2 to assess if the reads were properly paired. 
 
-We first build the index of the combined fasta file"
+I first build the index of the combined fasta file"
 ```ruby
 bowtie2-build trinity_combined_denovo.fasta trinity_combined_denovo.fasta
 ```
@@ -187,7 +187,7 @@ for file in ${fileList}
 			2>align_stats_${PREFIX}.txt |samtools view -@10 -Sb -o bowtie2_${PREFIX}.bam
 done | tee -a log_bowtie_2.txt
 ```
-We found all the assemblies were 100% paired with different overall alignment rate:
+I found all the assemblies were 100% paired with different overall alignment rate:
 
 | ID | Overall alignment genome guided (%) | Overall alignment de novo (%) |
 | ------ | ------ | ------ |
@@ -206,7 +206,7 @@ We found all the assemblies were 100% paired with different overall alignment ra
 
 ### 5.2 RNAquast 
 
-We compared the basic metrics data between genome guided and de novo assemblies of the ANG (n=5)
+I compared the basic metrics data between genome guided and de novo assemblies of the ANG (n=5)
 
 ```ruby
 module load rnaQUAST/1.5.2
@@ -222,11 +222,11 @@ rnaQUAST.py --transcripts centroids.fasta --gene_mark --threads 8 --output_dir R
 
 ![rnaquast_compare](https://user-images.githubusercontent.com/80131639/116941185-36f5e800-ac3d-11eb-886a-401921396b7c.png)
 
-There are more reads and better N50 score for the de novo assembly compared to the genome guided. This could be the result of possible bacterial contamination  However, interestingly we get more number of transcripts/isoforms of longer length in genome guided than de novo assembly. This appears to be a result of few (about 10s) longer length transcripts in genome guided. 
+There are more reads and better N50 score for the de novo assembly compared to the genome guided. This could be the result of possible bacterial contamination  However, interestingly I get more number of transcripts/isoforms of longer length in genome guided than de novo assembly. This appears to be a result of few (about 10s) longer length transcripts in genome guided. 
 
 ### 5.3 BUSCO
 
-We compared the BUSCO scores using the Metazoa database of Busco v.4.0.2 between genome guided and de novo assemblies of ANG (n=5)
+I compared the BUSCO scores using the Metazoa database of Busco v.4.0.2 between genome guided and de novo assemblies of ANG (n=5)
 ```ruby
 module load busco/4.0.2
 export AUGUSTUS_CONFIG_PATH=../../augustus/config
