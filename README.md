@@ -1,22 +1,7 @@
 # Two symbiotic organs and a squid
 Project proposal
 
-Most eukaryotes maintain a symbiotic relationship with different prokaryotes; the term used to describe an entity encompassing both host and microbes is called holobionts. The evolution of holobionts may have originated in the sea (McFall-Ngai and Ruby, 2000). For example, animal multicellularity may have emerged from marine protists. Protists like choanoflagellates need a signaling cue produced by Bacteroidetes to switch from solitary to colonial animals (Alegado et al., 2012). The Hawaiian bobtail squid (*Euprymna scolopes*) have two symbiotic organs, the light organ (LO) and the female-specific accessory nidamental gland (ANG). 
-
-As a defense mechanism, the nocturnal bobtail squid recruits bioluminescent *Vibrio fischeri* in a specialized light organ to counterilluminate against the moonlight. The mechanism of colonization and interaction between *E. scolopes* and *V. fischeri* has been well studied and is a model system for host-microbe interactions (Nyholm and McFall-Ngai, 2004).
-
-The ANG is a reservoir for antimicrobial bacteria (Kerwin et al., 2019). It's hypothesized that mucopolysaccharides from the nidamental gland (NG) and bacteria from the ANG coat the fertilized eggs in multiple layers of jelly coats at the connection between the NG and ANG (Fig 1B, C). The difference in post-spawning care of the cephalopods with and without an ANG supports this hypothesis; Cephalopods that lack an ANG, like octopods and some pelagic squid, guard and aerate or brood their eggs (i.e. excessive post-spawning care) whereas squid and cuttlefish that possess an ANG provide little to no post-spawn care as they lay their eggs on a rocky substrate, cover it with sand and abandon their eggs. Furthermore, antibacterial and antifungal activities were observed in eggs and bacterial isolates from the ANG and eggs of *Doryteuthis pealei* (Barbieri et al. 1997), *Uroteuthis duavaceli* (Gomathi et al. 2010), and *E. scolopes* (Gromek et al., 2016; Kerwin et al., 2019; Suria et al., 2020). Connections between the tubules containing bacteria and the nidamental gland were observed in *Sepia pharaonis* using histology (Huang et al., 2018). We do not yet know how the ANG maintains a stable microbiome.
-
-The bobtail squid provides a unique system to study two stable symbiotic organs with different functions. Most animals, including humans, have different organs with different microbiomes; for example, gut, skin, and vaginal microbiomes. These communities are dynamic and vary with several factors, making it difficult to study their effects on the host or how the host selects for them. The light organ of *E. scolopes* selectively maintains *V. fischeri* using various immune proteins like PGRPs and chemicals like halide peroxidase and nitric oxide. We do not know the immune and metabolic response to bacteria in the ANG. 
-
-Transcriptomics may help us understand what mechanisms the ANG uses to actively maintain and respond to bacteria. Transcriptomes can be assembled de-novo or genome-guided. There is a The is 5.1 Mb genome sequence of *E. scolopes*. The assembly has an N50 of 3,724kb with 35% gaps (Belcaid et al. 2019). This project will:
-1. Compare the qualities of de novo and genome-guided ANG (n=8) and LO transcriptomes (n=5).
-	* This will closely follow the tutorials for RNA-ses data analysis [Model Marine RNA-Seq and Non-ModelPlant RNA-Seq]
-		* HISAT2 for the genome-guided transcriptome
-		* Trinity for the de-novo assembled transcriptome
-	* Comparisons between the transcriptomes will be made using mesures such as RNA-Quast and BUSCO scores to detrmine the completeness and size of the transcriptome. 
-3. Analyze the pattern of differential expression between the ANG and LO from the de novo and genome-guided transcriptomes. If no significant difference is found, Nidhi will use the genome assembled transcriptomes for further analysis of the physiology of the ANG (to minimize issues with future authorship), while analysis of the de-novo assembled transcripts will continue for the project. If there are major differences, these will be explored. 
-	* Differentially expressd genes will likely be called using DESeq2.
+To identify the differences in de-novo and genome guidede transcriptome assembly
 
 
 ## Sample Information
@@ -260,10 +245,6 @@ busco -i centroids.fasta -o busco_gg_metazoa \
 
 De novo guided assembly gave a better BUSCO score compare to the genome guided. 
 
-## Discussion
-The primary goal of this project was to determine which mode of assembly is best suited for transcriptomics of _Euprymna scolopes._ This organism was recently sequenced and the genome still has some gaps. Based on our results, de novo guided assembly appears to be better. However, we would like to include the genome guided assembly so we can trace interesting genes to the genome annotation map. The community that studies this model organism is small but robust. Many efforts are collaborative, and thus would like to incorporate the genome guided assembly so certain genes can be located back to the genome easily. 
-
-In the future, we will be sequencing the ANG and central core (found inside the LO) of the same individual female. If by then an updated genome is assembled, Nidhi will use that genome for future assemblies. Else, she will use a combination of de novo and genome guided assemblies to further process and identify differentially expressed genes between the ANG and the central core. This will help identify any shared immune response to symbiotic bacteria and also identify genes unique to each organ. 
 
 ## Work Cited:
 
